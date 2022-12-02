@@ -1,0 +1,17 @@
+{
+  "name": "conditional-smart-orders",
+  "version": "0.0.1",
+  "description": "Repository showcasing the power of CoW Protocol smart orders",
+  "author": "cowprotocol",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.8.1",
+    "prettier-plugin-solidity": "^1.0.0",
+    "solhint": "^3.3.7",
+    "solhint-plugin-prettier": "^0.0.5"
+  },
+  "scripts": {
+    "fmt": "prettier 'src/**/*.sol' -w && prettier 'test/**/*.sol' -w",
+    "lint": "solhint 'src/**/*.sol' 'test/**/*.sol'"
+  }
+}
