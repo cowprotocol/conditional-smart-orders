@@ -15,6 +15,11 @@ This repository defined a common interface (`ConditionalOrder`) that all smart o
 - [Foundry](https://github.com/foundry-rs/foundry)
 - node (v16.18.0)
 - yarn
+- npm
+- [Tenderly](https://docs.tenderly.co/monitoring/integrations#installing-on-macos)[^1]
+- node[^1]
+
+[^1]: only when touching Web3 actions
 
 ## How to build/deploy an existing order type
 
@@ -31,6 +36,16 @@ Check `src/` for a full list and implementation details. In order to deploy one 
 
 The deployed contract should automatically be picked up by a watchdog and - once it returns a tradable order - find itself automatically placing this order. The status of placed orders by this contract can be observed on https://explorer.cow.fi/.
 
+### Debugging in case an order doesn't get created
+
+You can simulate the outcome of the watchdog locally by running
+
+```
+yarn check-deployment <deployed contract address>
+```
+
+This will give you the response of a single run of the watchdog (it will also create an order if possible). If this script passes, but you still don't see orders being placed automatically, please contact us.
+
 ## Writing your own Smart Order
 
 You are more than welcome to create new order types. For this simply create a new smart contract implementation in the `src/` folder (with an accompanying test contract in `/test`) and start hacking. 
@@ -40,3 +55,17 @@ Your contract should inherit from `ConditionalOrder` and `EIP1271Verifier`. This
 Look at other example contracts for help/inspiration. To test your contract and make sure they comply with our style-guides please run:
 1. `forge test`
 2. `yarn fmt`
+
+Once created, you can deploy your own smart orders just like existing order types as described 👆
+
+## Deploying Tenderly Actions
+
+This is only needed if you want to operate your own watchdog. In this case, please consider using a different trigger event, to avoid other watchdogs from monitoring the same contract. You also may have the project name if you are not part of the gp-v2 organisation.
+
+When making changes to the tenderly actions, a good way to test them locally is by writing a [test script](https://docs.tenderly.co/web3-actions/references/local-development-and-testing).
+
+Once ready to deploy, run
+
+```
+tenderly actions deploy
+```

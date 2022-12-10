@@ -17,7 +17,9 @@
     "fmt:contracts": "prettier 'src/**/*.sol' -w && prettier 'test/**/*.sol' -w",
     "lint:contracts": "solhint 'src/**/*.sol' 'test/**/*.sol'",
     "fmt:actions": "prettier ./actions -w",
+    "build:actions": "cd actions && npm ci && yarn run build",
     "lint:actions": "eslint && prettier --check ./actions",
-    "test:actions": "cd actions && npm ci && yarn run build && ts-node test/test_register.ts"
+    "test:actions": "yarn build:actions && ts-node actions/test/test_register.ts",
+    "check-deployment": "yarn build:actions && ts-node actions/test/run_local.ts"
   }
 }
