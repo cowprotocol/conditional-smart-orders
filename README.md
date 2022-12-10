@@ -37,6 +37,6 @@ You are more than welcome to create new order types. For this simply create a ne
 
 Your contract should inherit from `ConditionalOrder` and `EIP1271Verifier`. This ensures you are implementing the correct methods. If you want your contract to be picked up by a watchdog, don't forget to emit the `ConditionalOrderCreated` even in the constructor.
 
-Look at other example contracts for help/inspiration. To test your contract and make sure they comply with our style-guides please run
+Look at other example contracts for help/inspiration. To test your contract and make sure they comply with our style-guides please run:
 1. `forge test`
-2. `yarn format`
+2. `yarn fmt`
