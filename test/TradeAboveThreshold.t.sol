@@ -5,11 +5,12 @@ pragma solidity ^0.7.6;
 import "forge-std/Test.sol";
 import "../src/TradeAboveThreshold.sol";
 
+//solhint-disable reason-string
 contract TradeAboveThresholdTest is Test {
     using GPv2Order for GPv2Order.Data;
 
     TradeAboveThreshold public instance;
-    GPv2Settlement settlement;
+    GPv2Settlement public settlement;
     IERC20 public sellToken;
     IERC20 public buyToken;
     address public receiver;
