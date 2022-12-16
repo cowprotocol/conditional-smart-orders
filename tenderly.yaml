@@ -22,4 +22,15 @@ actions:
                 logEmitted:
                   startsWith: 
                   - 0xa463d4c6494f3788b95f6cf2a5c8c1a63090dce890c49318a6f5f32dc51efcd1 
+      watch_orders:
+        description: Checks on every block if the registered smart order contract wants to trade
+        function: watch:checkForAndPlaceOrder
+        trigger:
+          type: block
+          block:
+            network:
+              - 1
+              - 5
+              - 100
+            blocks: 5
 project_slug: ""
