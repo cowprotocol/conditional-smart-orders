@@ -99,7 +99,7 @@ contract TradeAboveThresholdTest is Test {
         bytes32 hash = order.hash(settlement.domainSeparator());
         bytes memory encoded = abi.encode(order);
 
-        vm.expectRevert("encoded order is not equal to tradable order");
+        vm.expectRevert("encoded order != tradable order");
         instance.isValidSignature(hash, encoded);
     }
 
@@ -111,7 +111,7 @@ contract TradeAboveThresholdTest is Test {
         order.sellAmount += 1;
         bytes memory encoded = abi.encode(order);
 
-        vm.expectRevert("encoded order doesn't match digest");
+        vm.expectRevert("encoded order digest mismatch");
         instance.isValidSignature(hash, encoded);
     }
 }
