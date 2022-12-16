@@ -20,7 +20,7 @@ export const addContract: ActionFn = async (context: Context, event: Event) => {
     if (log.topics[0] === iface.getEventTopic("ConditionalOrderCreated")) {
       const contract = log.address;
       if (
-        !registry.contracts.find((existing: string) => existing == contract)
+        registry.contracts.find((existing: string) => existing == contract) === undefined
       ) {
         registry.contracts.push(contract);
         console.log(`adding contract ${contract}`);
