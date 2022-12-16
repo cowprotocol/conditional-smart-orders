@@ -26,7 +26,7 @@ export const checkForAndPlaceOrder: ActionFn = async (
         "getTradeableOrder()",
         [Array.from(order)]
       );
-      console.log(`Placing Order...`);
+      console.log(`Placing Order: ${order}`);
       await placeOrder(
         { ...order, from: contract_address, signature },
         chainContext.api_url

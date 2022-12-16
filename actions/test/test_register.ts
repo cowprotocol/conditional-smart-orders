@@ -3,23 +3,23 @@ import {
   TestLog,
   TestRuntime,
 } from "@tenderly/actions-test";
-import { assert } from "console";
+import { strict as assert } from 'node:assert';
 import { addContract, storageKey } from "../register";
 
 const main = async () => {
   const testRuntime = new TestRuntime();
 
-  // https://gnosisscan.io/tx/0x9f20f13c80cf89604763ad0aed86bfd6f647e1ecd5da1921e7fe09ff3664a3ec#eventlog
+  // https://goerli.etherscan.io/tx/0xa0f618eea9c1195a7023835bd0306a6ead63fbdb37dd638402e684d0c52220a7#eventlog
   const alreadyIndexedLog = new TestLog();
-  alreadyIndexedLog.address = "0x75748d1774e768370d67571d5ac954c3cf3114c2";
   alreadyIndexedLog.topics = [
-    "0xa463d4c6494f3788b95f6cf2a5c8c1a63090dce890c49318a6f5f32dc51efcd1",
+    "0x348a1454f658b360fcb291e66a7adc4a65b64b38b956802a976d5e460d0e2084",
+    "0x00000000000000000000000051fcd11117bc85c319fd2848b301bbf6bc2b630f"
   ];
 
   const newLog = new TestLog();
-  newLog.address = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
   newLog.topics = [
-    "0xa463d4c6494f3788b95f6cf2a5c8c1a63090dce890c49318a6f5f32dc51efcd1",
+    "0x348a1454f658b360fcb291e66a7adc4a65b64b38b956802a976d5e460d0e2084",
+    "0x000000000000000000000000EeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
   ];
 
   const event = new TestTransactionEvent();
@@ -28,7 +28,7 @@ const main = async () => {
   event.network = "mainnet";
 
   await testRuntime.context.storage.putJson(storageKey(event.network), {
-    contracts: ["0x75748d1774e768370d67571d5ac954c3cf3114c2"],
+    contracts: ["0x51fCD11117bC85C319FD2848B301BbF6bC2b630f"],
   });
 
   await testRuntime.execute(addContract, event);
@@ -42,7 +42,7 @@ const main = async () => {
     "Incorrect amount of contracts indexed"
   );
   assert(
-    storage.contracts[0] == "0x75748d1774e768370d67571d5ac954c3cf3114c2",
+    storage.contracts[0] == "0x51fCD11117bC85C319FD2848B301BbF6bC2b630f",
     "Missing already indexed contract"
   );
   assert(
