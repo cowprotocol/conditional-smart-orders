@@ -8,10 +8,16 @@
     "prettier": "^2.8.1",
     "prettier-plugin-solidity": "^1.0.0",
     "solhint": "^3.3.7",
-    "solhint-plugin-prettier": "^0.0.5"
+    "solhint-plugin-prettier": "^0.0.5",
+    "eslint": "8.27.0"
   },
   "scripts": {
-    "fmt": "prettier 'src/**/*.sol' -w && prettier 'test/**/*.sol' -w",
-    "lint": "solhint 'src/**/*.sol' 'test/**/*.sol'"
+    "fmt": "yarn fmt:contracts && yarn fmt:actions",
+    "lint": "yarn lint:contracts && yarn lint:actions",
+    "fmt:contracts": "prettier 'src/**/*.sol' -w && prettier 'test/**/*.sol' -w",
+    "lint:contracts": "solhint 'src/**/*.sol' 'test/**/*.sol'",
+    "fmt:actions": "prettier ./actions -w",
+    "lint:actions": "eslint && prettier --check ./actions",
+    "test:actions": "cd actions && npm ci && yarn run build && ts-node test/test_register.ts"
   }
 }

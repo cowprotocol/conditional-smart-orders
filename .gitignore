@@ -12,3 +12,6 @@ out/
 
 # JS dependencies
 node_modules/
+
+# Copied contract artifacts
+actions/artifacts
