@@ -46,6 +46,26 @@ yarn check-deployment <deployed contract address>
 
 This will give you the response of a single run of the watchdog (it will also create an order if possible). If this script passes, but you still don't see orders being placed automatically, please contact us.
 
+## Using Smart Orders with your (Gnosis) Safe
+
+In order to keep the smart order logic minimal and not worry about funding, withdrawing, updating ownership of the smart order, it can be beneficial to use a [Safe Contract](https://app.safe.global/) as the main trading contract.
+
+Safes allow for a custom "fallback handler" that is used to verify signatures and can be used to implement arbitrary ERC1271 logic, such as the one implemented by our conditional orders for CoW Protocol trade verification.
+
+The Safe contracts have been battle tested and come with fully configurable custody access, ownership management, etc. out of the box. We recommend using a fresh Safe for each order as changing the fallback handler can have an impact on other use cases that the Safe requires ERC1271 signatures for (this could be solved by using a "fallback handler chain" which goes beyond the scope of this document).
+
+Order types that support being used with Safe should come with a factory contract that allows creating new instances via the transaction builder in the Safe UI (rather than requiring command line interactions).
+
+To deploy, e.g. a `TradeAboveThreshold` smart order safe, do the following:
+
+1. Create a new Safe
+2. Set allowance on CoW Swap for the token you are looking to sell (e.g. via the CoW Swap Safe App)
+3. Using the transaction builder, call the `TradeAboveThresholdFactory` (may have to be deployed) to create a custom `TradeAboveThreshold` instance using your Safe address as the target (remaining parameters according to your use case)
+4. Once the `TradeAboveThreshold` is created, use the transaction builder to create another transaction, this time on your Safe itself, to `setFallbackHandler` to the address of the newly created `TradeAboveThreshold` instance.
+
+Once the Safe meets the condition to trade, an order on its behalf should be automatically placed.
+
+
 ## Writing your own Smart Order
 
 You are more than welcome to create new order types. For this simply create a new smart contract implementation in the `src/` folder (with an accompanying test contract in `/test`) and start hacking. 
