@@ -12,8 +12,8 @@ contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
     IERC20 public immutable sellToken;
     IERC20 public immutable buyToken;
     address public immutable receiver;
-    uint256 immutable threshold;
-    bytes32 domainSeparator;
+    uint256 public immutable threshold;
+    bytes32 public domainSeparator;
 
     constructor(
         IERC20 _sellToken,
@@ -44,6 +44,7 @@ contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
         uint256 balance = sellToken.balanceOf(address(this));
         require(balance >= threshold, "Not enough balance");
         // ensures that orders queried shortly after one another result in the same hash (to avoid spamming the orderbook)
+        // solhint-disable-next-line not-rely-on-time
         uint32 currentTimeBucket = ((uint32(block.timestamp) / 900) + 1) * 900;
         return
             GPv2Order.Data(
@@ -74,14 +75,14 @@ contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
         );
         require(
             order.hash(domainSeparator) == orderDigest,
-            "encoded order doesn't match digest"
+            "encoded order digest mismatch"
         );
 
         // If getTradeableOrder() may change between blocks (e.g. because of a variable exchange rate or exprity date, perform a proper attribute comparison with `order` here instead of matching full hashes)
         require(
             ConditionalOrder(this).getTradeableOrder().hash(domainSeparator) ==
                 orderDigest,
-            "encoded order is not equal to tradable order"
+            "encoded order != tradable order"
         );
 
         return GPv2EIP1271.MAGICVALUE;

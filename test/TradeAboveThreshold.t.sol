@@ -5,11 +5,12 @@ pragma solidity ^0.7.6;
 import "forge-std/Test.sol";
 import "../src/TradeAboveThreshold.sol";
 
+//solhint-disable reason-string
 contract TradeAboveThresholdTest is Test {
     using GPv2Order for GPv2Order.Data;
 
     TradeAboveThreshold public instance;
-    GPv2Settlement settlement;
+    GPv2Settlement public settlement;
     IERC20 public sellToken;
     IERC20 public buyToken;
     address public receiver;
@@ -98,7 +99,7 @@ contract TradeAboveThresholdTest is Test {
         bytes32 hash = order.hash(settlement.domainSeparator());
         bytes memory encoded = abi.encode(order);
 
-        vm.expectRevert("encoded order is not equal to tradable order");
+        vm.expectRevert("encoded order != tradable order");
         instance.isValidSignature(hash, encoded);
     }
 
@@ -110,7 +111,7 @@ contract TradeAboveThresholdTest is Test {
         order.sellAmount += 1;
         bytes memory encoded = abi.encode(order);
 
-        vm.expectRevert("encoded order doesn't match digest");
+        vm.expectRevert("encoded order digest mismatch");
         instance.isValidSignature(hash, encoded);
     }
 }
