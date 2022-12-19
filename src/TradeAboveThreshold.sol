@@ -13,8 +13,8 @@ contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
     IERC20 public immutable sellToken;
     IERC20 public immutable buyToken;
     address public immutable target;
-    uint256 immutable threshold;
-    bytes32 domainSeparator;
+    uint256 public immutable threshold;
+    bytes32 public domainSeparator;
 
     constructor(
         IERC20 _sellToken,

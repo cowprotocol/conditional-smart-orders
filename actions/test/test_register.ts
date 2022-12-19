@@ -3,7 +3,7 @@ import {
   TestLog,
   TestRuntime,
 } from "@tenderly/actions-test";
-import { strict as assert } from 'node:assert';
+import { strict as assert } from "node:assert";
 import { addContract, storageKey } from "../register";
 
 const main = async () => {
@@ -13,7 +13,7 @@ const main = async () => {
   const alreadyIndexedLog = new TestLog();
   alreadyIndexedLog.topics = [
     "0x348a1454f658b360fcb291e66a7adc4a65b64b38b956802a976d5e460d0e2084",
-    "0x00000000000000000000000051fcd11117bc85c319fd2848b301bbf6bc2b630f"
+    "0x00000000000000000000000051fcd11117bc85c319fd2848b301bbf6bc2b630f",
   ];
 
   const newLog = new TestLog();
