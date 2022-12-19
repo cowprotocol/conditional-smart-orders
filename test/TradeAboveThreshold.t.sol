@@ -18,7 +18,7 @@ contract TradeAboveThresholdTest is Test {
     function setUp() public {
         sellToken = IERC20(0x1);
         buyToken = IERC20(0x2);
-        receiver = address(0x3);
+        receiver = address(0x0);
         settlement = new GPv2Settlement(GPv2Authentication(0), IVault(0));
 
         //mock approval

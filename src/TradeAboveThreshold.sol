@@ -6,25 +6,29 @@ import "./ConditionalOrder.sol";
 import "lib/contracts/src/contracts/GPv2Settlement.sol";
 import "lib/contracts/src/contracts/interfaces/GPv2EIP1271.sol";
 
+// @title A smart contract that trades whenever its balance of a certain token exceeds a target threshold
 contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
     using GPv2Order for GPv2Order.Data;
 
     IERC20 public immutable sellToken;
     IERC20 public immutable buyToken;
-    address public immutable receiver;
+    address public immutable target;
     uint256 public immutable threshold;
     bytes32 public domainSeparator;
 
     constructor(
         IERC20 _sellToken,
         IERC20 _buyToken,
-        address _receiver,
+        address _target,
         uint256 _threshold,
         GPv2Settlement _settlementContract
     ) {
         sellToken = _sellToken;
         buyToken = _buyToken;
-        receiver = _receiver;
+        if (_target == address(0)) {
+            _target = address(this);
+        }
+        target = _target;
         threshold = _threshold;
         domainSeparator = _settlementContract.domainSeparator();
         _sellToken.approve(
@@ -32,16 +36,18 @@ contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
             uint(-1)
         );
 
-        emit ConditionalOrderCreated();
+        emit ConditionalOrderCreated(_target);
     }
 
+    // @dev If the `target`'s balance of `sellToken` is above the specified threshold, sell its entire balance
+    // for `buyToken` at the current market price (no limit!).
     function getTradeableOrder()
         external
         view
         override
         returns (GPv2Order.Data memory)
     {
-        uint256 balance = sellToken.balanceOf(address(this));
+        uint256 balance = sellToken.balanceOf(target);
         require(balance >= threshold, "Not enough balance");
         // ensures that orders queried shortly after one another result in the same hash (to avoid spamming the orderbook)
         // solhint-disable-next-line not-rely-on-time
@@ -50,7 +56,7 @@ contract TradeAboveThreshold is ConditionalOrder, EIP1271Verifier {
             GPv2Order.Data(
                 sellToken,
                 buyToken,
-                receiver,
+                target,
                 balance,
                 1, // 0 buy amount is not allowed
                 currentTimeBucket + 900, // between 15 and 30 miunte validity

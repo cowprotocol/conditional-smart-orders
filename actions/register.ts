@@ -18,7 +18,11 @@ export const addContract: ActionFn = async (context: Context, event: Event) => {
 
   transactionEvent.logs.forEach((log) => {
     if (log.topics[0] === iface.getEventTopic("ConditionalOrderCreated")) {
-      const contract = log.address;
+      const contract = iface.decodeEventLog(
+        "ConditionalOrderCreated",
+        log.data,
+        log.topics
+      )[0];
       if (
         registry.contracts.find((existing: string) => existing == contract) ===
         undefined
