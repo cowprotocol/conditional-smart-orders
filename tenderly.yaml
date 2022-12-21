@@ -21,7 +21,7 @@ actions:
                 status: success
                 logEmitted:
                   startsWith: 
-                  - 0xa463d4c6494f3788b95f6cf2a5c8c1a63090dce890c49318a6f5f32dc51efcd1 
+                  - 0x348a1454f658b360fcb291e66a7adc4a65b64b38b956802a976d5e460d0e2084
       watch_orders:
         description: Checks on every block if the registered smart order contract wants to trade
         function: watch:checkForAndPlaceOrder
