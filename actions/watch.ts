@@ -115,11 +115,11 @@ class ChainContext {
 function apiUrl(network: string): string {
   switch (network) {
     case "1":
-      return "https://barn.api.cow.fi/mainnet";
+      return "https://api.cow.fi/mainnet";
     case "5":
-      return "https://barn.api.cow.fi/goerli";
+      return "https://api.cow.fi/goerli";
     case "100":
-      return "https://barn.api.cow.fi/xdai";
+      return "https://api.cow.fi/xdai";
     default:
       throw "Unsupported network";
   }
