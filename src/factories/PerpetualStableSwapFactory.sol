@@ -6,7 +6,7 @@ import "../PerpetualStableSwap.sol";
 
 // @title A factory to create `PerpetualStableSwap` order instances
 contract PerpetualStableSwapFactory {
-    GPv2Settlement constant SETTLEMENT_CONTRACT =
+    GPv2Settlement public constant SETTLEMENT_CONTRACT =
         GPv2Settlement(0x9008D19f58AAbD9eD0D60971565AA8510560ab41);
 
     function create(

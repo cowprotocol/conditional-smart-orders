@@ -17,7 +17,7 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
     IERC20 public immutable tokenB;
     uint256 public immutable halfSpreadBps;
     address public immutable target;
-    bytes32 domainSeparator;
+    bytes32 public domainSeparator;
 
     // There are 10k basis points in a unit
     uint256 public constant BPS = 10_000;
@@ -45,7 +45,7 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
                 address(_settlementContract.vaultRelayer()),
                 uint(-1)
             );
-        } 
+        }
         target = _target;
         emit ConditionalOrderCreated(_target);
     }
@@ -68,12 +68,16 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
             sellToken = tokenA;
             buyToken = tokenB;
             sellAmount = balanceA;
-            buyAmount = convertAmount(tokenA, balanceA, tokenB).mul(BPS.add(halfSpreadBps)).div(BPS);
+            buyAmount = convertAmount(tokenA, balanceA, tokenB)
+                .mul(BPS.add(halfSpreadBps))
+                .div(BPS);
         } else {
             sellToken = tokenB;
             buyToken = tokenA;
             sellAmount = balanceB;
-            buyAmount = convertAmount(tokenB, balanceB, tokenA).mul(BPS.add(halfSpreadBps)).div(BPS);
+            buyAmount = convertAmount(tokenB, balanceB, tokenA)
+                .mul(BPS.add(halfSpreadBps))
+                .div(BPS);
         }
         require(sellAmount > 0, "not funded");
 
@@ -82,7 +86,9 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
         // Note, that reducing currenbt block to a common start time is needed so that the order returned here
         // does not change between the time it is queried and the time it is settled.
         uint32 validity = 1 weeks;
-        uint32 currentTimeBucket = ((uint32(block.timestamp) / validity) + 1) * validity;
+        // solhint-disable-next-line not-rely-on-time
+        uint32 currentTimeBucket = ((uint32(block.timestamp) / validity) + 1) *
+            validity;
         return
             GPv2Order.Data(
                 sellToken,
@@ -109,9 +115,9 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
         uint8 destDecimals = destToken.decimals();
 
         if (srcDecimals > destDecimals) {
-            destAmount = srcAmount.div(10**(srcDecimals.sub(destDecimals)));
+            destAmount = srcAmount.div(10 ** (srcDecimals.sub(destDecimals)));
         } else {
-            destAmount = srcAmount.mul(10**(destDecimals.sub(srcDecimals)));
+            destAmount = srcAmount.mul(10 ** (destDecimals.sub(srcDecimals)));
         }
     }
 
