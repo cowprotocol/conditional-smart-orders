@@ -22,6 +22,13 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
     // There are 10k basis points in a unit
     uint256 public constant BPS = 10_000;
 
+    /**
+     * Creates a new perpetual swap order. All resulting swaps will be made from the target contract.
+     * @param _tokenA One of the two tokens that can be perpetually swapped against one another
+     * @param _tokenB The other of the two tokens that can be perpetually swapped against one another
+     * @param _halfSpreadBps The markup to parity (ie 1:1 exchange rate) that is charged for each swap
+     * @param _target The contract holding the relevant balances (e.g a target Safe) or 0 if this contract.
+     */
     constructor(
         IERC20 _tokenA,
         IERC20 _tokenB,
@@ -83,8 +90,8 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
 
         // Unless spread is 0 (and there is no surplus), order collision is not an issue as sell and buy amounts should
         // increase for each subsequent order. We therefore set validity to a large time span
-        // Note, that reducing currenbt block to a common start time is needed so that the order returned here
-        // does not change between the time it is queried and the time it is settled.
+        // Note, that reducing current block to a common start time is needed so that the order returned here
+        // does not change between the time it is queried and the time it is settled. Validity will be between 1 & 2 weeks.
         uint32 validity = 1 weeks;
         // solhint-disable-next-line not-rely-on-time
         uint32 currentTimeBucket = ((uint32(block.timestamp) / validity) + 1) *
