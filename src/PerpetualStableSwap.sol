@@ -134,8 +134,7 @@ contract PerpetualStableSwap is ConditionalOrder, EIP1271Verifier {
         bytes calldata
     ) external view override returns (bytes4) {
         require(
-            getTradeableOrder().hash(domainSeparator) ==
-                orderDigest,
+            getTradeableOrder().hash(domainSeparator) == orderDigest,
             "encoded order != tradable order"
         );
 
