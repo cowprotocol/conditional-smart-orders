@@ -21,6 +21,15 @@ This repository defined a common interface (`ConditionalOrder`) that all smart o
 
 [^1]: only when touching Web3 actions
 
+## Deployed Contracts
+
+Some of the contracts have been pre-deployed at the following addresses:
+
+| Contract Name | Mainnet | Gnosis Chain | Goerli |
+| --- | --- | --- | --- |
+| TradeAboveThresholdFactory | [0xe608f868d95156b4df28f001a8d926df57c44054](https://etherscan.io/address/0xe608f868d95156b4df28f001a8d926df57c44054) | [0xd20a99e3c6c103108d74e241908e00ef4db447fb](https://gnosisscan.io/address/0xd20a99e3c6c103108d74e241908e00ef4db447fb) | [0x0362cb0892c3410d9beac1bc774fc2edb1b026b0](https://goerli.etherscan.io/address/0x0362cb0892c3410d9beac1bc774fc2edb1b026b0) |
+| PerpetualStableSwapFactory | [0x2441c4ee592c29d2b1ed86aa9b3bbd6dadfee02b](https://etherscan.io/address/0x2441c4ee592c29d2b1ed86aa9b3bbd6dadfee02b) |  [0x46567d9749f435A8cE413BA92B6B1b3E90008a2e](https://gnosisscan.io/address/0x46567d9749f435A8cE413BA92B6B1b3E90008a2e) | [0xE608F868d95156B4df28F001A8D926Df57c44054](https://goerli.etherscan.io/address/0xE608F868d95156B4df28F001A8D926Df57c44054) |
+
 ## How to build/deploy an existing order type
 
 The repository comes with one example contracts:
