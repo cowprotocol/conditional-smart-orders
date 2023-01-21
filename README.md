@@ -26,6 +26,7 @@ This repository defined a common interface (`ConditionalOrder`) that all smart o
 The repository comes with one example contracts:
 
 - **TradeAboveThreshold:** Checks the contract's balance of a specific token and - if larger than a threshold - wants to trade all of it into a specified buy token.
+- **PerpetualStableSwap:** Takes a token pair and is always willing to trade the token it has more balance of for the other one at a rate 1:1 + a specified spread.
 
 Check `src/` for a full list and implementation details. In order to deploy one of the contracts for your own use case, execute the following steps:
 
