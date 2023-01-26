@@ -6,6 +6,7 @@
     "test": "ts-node test/test_register.ts"
   },
   "devDependencies": {
+    "@tenderly/actions-test": "^0.1.0",
     "@types/node": "^18.11.12"
   },
   "dependencies": {
