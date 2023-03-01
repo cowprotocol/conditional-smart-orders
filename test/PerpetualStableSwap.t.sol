@@ -3,6 +3,7 @@ pragma abicoder v2;
 pragma solidity ^0.7.6;
 
 import "forge-std/Test.sol";
+import "./libraries/TestLib.t.sol";
 import "../src/PerpetualStableSwap.sol";
 import "lib/contracts/src/contracts/interfaces/GPv2EIP1271.sol";
 
@@ -22,22 +23,6 @@ contract PerpetualStableSwapTest is Test {
         settlement = new GPv2Settlement(GPv2Authentication(0), IVault(0));
     }
 
-    function setBalance(IERC20 token, uint256 balance) private {
-        vm.mockCall(
-            address(token),
-            abi.encodeWithSelector(token.balanceOf.selector, receiver),
-            abi.encode(balance)
-        );
-    }
-
-    function setDecimals(IERC20 token, uint8 decimals) private {
-        vm.mockCall(
-            address(token),
-            abi.encodeWithSelector(token.decimals.selector),
-            abi.encode(decimals)
-        );
-    }
-
     function testTradesTokenWithLargerBalance() public {
         uint256 halfSpreadBps = 100;
         instance = new PerpetualStableSwap(
@@ -48,10 +33,10 @@ contract PerpetualStableSwapTest is Test {
             settlement
         );
 
-        setDecimals(tokenA, 18);
-        setDecimals(tokenB, 18);
-        setBalance(tokenA, 1e19);
-        setBalance(tokenB, 2e19);
+        TestLib.setDecimals(vm, tokenA, 18);
+        TestLib.setDecimals(vm, tokenB, 18);
+        TestLib.setBalance(vm, tokenA, 1e19, receiver);
+        TestLib.setBalance(vm, tokenB, 2e19, receiver);
 
         GPv2Order.Data memory order = instance.getTradeableOrder();
         require(order.sellToken == tokenB, "Wrong sell token");
@@ -78,10 +63,10 @@ contract PerpetualStableSwapTest is Test {
         );
 
         //Larger decimal token has more balance
-        setDecimals(tokenA, 18);
-        setDecimals(tokenB, 6);
-        setBalance(tokenA, 2e18);
-        setBalance(tokenB, 1e6);
+        TestLib.setDecimals(vm, tokenA, 18);
+        TestLib.setDecimals(vm, tokenB, 6);
+        TestLib.setBalance(vm, tokenA, 2e18, receiver);
+        TestLib.setBalance(vm, tokenB, 1e6, receiver);
 
         GPv2Order.Data memory order = instance.getTradeableOrder();
         require(order.sellToken == tokenA, "Wrong sell token");
@@ -97,7 +82,7 @@ contract PerpetualStableSwapTest is Test {
         );
 
         //Lower decimal token has more balance
-        setBalance(tokenB, 3e6);
+        TestLib.setBalance(vm, tokenB, 3e6, receiver);
 
         order = instance.getTradeableOrder();
         require(order.sellToken == tokenB, "Wrong sell token");
@@ -123,10 +108,10 @@ contract PerpetualStableSwapTest is Test {
             settlement
         );
 
-        setDecimals(tokenA, 18);
-        setDecimals(tokenB, 18);
-        setBalance(tokenA, 1e18);
-        setBalance(tokenB, 1e18);
+        TestLib.setDecimals(vm, tokenA, 18);
+        TestLib.setDecimals(vm, tokenB, 18);
+        TestLib.setBalance(vm, tokenA, 1e18, receiver);
+        TestLib.setBalance(vm, tokenB, 1e18, receiver);
 
         vm.warp(1671436380); // Mon Dec 19
         GPv2Order.Data memory order = instance.getTradeableOrder();
