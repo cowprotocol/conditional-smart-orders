@@ -5,7 +5,12 @@ import "lib/contracts/src/contracts/interfaces/IERC20.sol";
 import "forge-std/Test.sol";
 
 library TestLib {
-    function setBalance(Vm vm, IERC20 token, uint256 balance, address owner) public {
+    function setBalance(
+        Vm vm,
+        IERC20 token,
+        uint256 balance,
+        address owner
+    ) public {
         vm.mockCall(
             address(token),
             abi.encodeWithSelector(token.balanceOf.selector, owner),

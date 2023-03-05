@@ -69,11 +69,14 @@ contract WaitForCoWOrder is EIP1271Verifier {
             expectedOutCalculatorCalldata
         );
         // Increase out amount by half spread (to get to mid point)
-        expectedOutForOneUnit = expectedOutForOneUnit.mul(BPS.add(slippageToleranceBps)).div(BPS);
-        
+        expectedOutForOneUnit = expectedOutForOneUnit
+            .mul(BPS.add(slippageToleranceBps))
+            .div(BPS);
+
         // Assume zero price impact
         uint256 sellAmount = sellToken.balanceOf(target);
-        uint256 buyAmount = expectedOutForOneUnit.mul(sellAmount) / 10 ** sellToken.decimals();
+        uint256 buyAmount = expectedOutForOneUnit.mul(sellAmount) /
+            10 ** sellToken.decimals();
 
         // solhint-disable-next-line not-rely-on-time
         uint32 validTo = ((uint32(block.timestamp) / 3600) + 1) * 3600;
@@ -125,7 +128,11 @@ contract WaitForCoWOrder is EIP1271Verifier {
         // Check the order respects the limit price of the reference order
         GPv2Order.Data memory limit = getTradeableOrder();
 
-        require(limit.sellAmount.mul(order.buyAmount) >= order.sellAmount.mul(limit.buyAmount), "Bad price");
+        require(
+            limit.sellAmount.mul(order.buyAmount) >=
+                order.sellAmount.mul(limit.buyAmount),
+            "Bad price"
+        );
 
         return GPv2EIP1271.MAGICVALUE;
     }
