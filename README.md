@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> _This repository has been deprecated in favour of https://github.com/cowprotocol/composable-cow_
+
 # Conditional Smart Orders
 
 Repository to showcase how to implement autonomous trading agents in the form of smart contracts that would like to place orders based on some observable on chain condition (e.g. token balance, oracle price, etc).
